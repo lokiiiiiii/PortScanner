@@ -101,13 +101,13 @@ class PortScanner:
             # May need to return specific value to indicate the failure.
 
         start_time = time.time()
-        output = self.__scan_ports(server_ip, self.__delay, message.encode('utf-8'))
+        openPorts = self.__scan_ports(server_ip, self.__delay, message.encode('utf-8'))
         stop_time = time.time()
 
         print('host {} scanned in  {} seconds'.format(host_name, stop_time - start_time))
         print('finished scan!\n')
 
-        return output
+        return openPorts
 
     def set_thread_limit(self, limit):
         """
@@ -210,6 +210,7 @@ class PortScanner:
         """
         Controller of the __scan_ports_helper() function
 
+        :rtype: list
         :param ip: the ip address that is being scanned
         :type ip: str
         :param delay: the time in seconds that a TCP socket waits until timeout
@@ -230,12 +231,15 @@ class PortScanner:
             time.sleep(0.01)
             continue
 
+        openPorts=[]
+
         # Print opening ports from small to large
         for port in self.target_ports:
             if output[port] == 'OPEN':
                 print('{}: {}\n'.format(port, output[port]))
+                openPorts.append(port)
 
-        return output
+        return openPorts
 
     def __TCP_connect(self, ip, port_number, delay, output, message):
         """
