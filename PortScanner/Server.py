@@ -11,18 +11,7 @@ def handle_client(client_socket):
     处理客户端请求
     """
     request = client_socket.recv(1024)
-    print str(request)
-
-    command = request.decode('utf-8')
-    obj = subprocess.Popen(command,
-                           shell=True,
-                           stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
-    result = obj.stdout.read() + obj.stderr.read()
-    # 如果是win还需要转换编码
-    if sys.platform == 'win32':
-        result = result.decode('gbk').encode('utf-8')
-    print result
+    print str(request).split()[1].split("?")[1]
 
     # 构造响应数据
     response_start_line = "HTTP/1.1 200 OK\r\n"
