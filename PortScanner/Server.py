@@ -1,9 +1,9 @@
 # coding:utf-8
 import socket
-import subprocess
-import sys
+
 
 from multiprocessing import Process
+import PortScanner as ps
 
 
 def handle_client(client_socket):
@@ -11,12 +11,23 @@ def handle_client(client_socket):
     处理客户端请求
     """
     request = client_socket.recv(1024)
-    print str(request).split()[1].split("?")[1]
+    ip = str(request).split()[1].split("?")[1]
+    print ip
+
+    # Initialize a Scanner object that will scan top 1000 commonly used ports.
+    scanner = ps.PortScanner(target_ports=1000)
+    message = ''
+    scanner.set_thread_limit(1500)
+    scanner.set_delay(15)
+
+    openPorts = scanner.scan(ip, message)
+    result = ip + "," + ('.'.join(list(map(str, openPorts)))) + "\n"
+    print result
 
     # 构造响应数据
     response_start_line = "HTTP/1.1 200 OK\r\n"
     response_headers = "Server: My server\r\n"
-    response_body = "<h1>Python HTTP Test</h1>"
+    response_body = result
     response = response_start_line + response_headers + "\r\n" + response_body
 
     # 向客户端返回响应数据
