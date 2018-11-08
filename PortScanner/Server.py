@@ -23,7 +23,7 @@ def handle_client(client_socket):
     openPorts = scanner.scan(ip, message)
     # result = ('.'.join(list(map(str, openPorts))))
     print openPorts
-    result = str(openPorts)
+    result = str(openPorts).replace(",", ";")
 
 
 
