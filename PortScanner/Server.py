@@ -21,13 +21,15 @@ def handle_client(client_socket):
     scanner.set_delay(15)
 
     openPorts = scanner.scan(ip, message)
-    result = ip + "," + ('.'.join(list(map(str, openPorts)))) + "\n"
-    print result
+    # result = ('.'.join(list(map(str, openPorts))))
+    print openPorts
+
+
 
     # 构造响应数据
     response_start_line = "HTTP/1.1 200 OK\r\n"
     response_headers = "Server: My server\r\n"
-    response_body = result
+    response_body = openPorts
     response = response_start_line + response_headers + "\r\n" + response_body
 
     # 向客户端返回响应数据
