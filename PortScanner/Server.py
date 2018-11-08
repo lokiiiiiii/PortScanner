@@ -23,13 +23,14 @@ def handle_client(client_socket):
     openPorts = scanner.scan(ip, message)
     # result = ('.'.join(list(map(str, openPorts))))
     print openPorts
+    result = str(openPorts)
 
 
 
     # 构造响应数据
     response_start_line = "HTTP/1.1 200 OK\r\n"
     response_headers = "Server: My server\r\n"
-    response_body = openPorts
+    response_body = result
     response = response_start_line + response_headers + "\r\n" + response_body
 
     # 向客户端返回响应数据
